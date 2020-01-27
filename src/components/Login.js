@@ -6,7 +6,7 @@ const Login = () => (
   <AuthConsumer>
     {({ initiateLogin }) => (
       <button className="btn btn-sm btn-primary" onClick={initiateLogin}>
-        Login
+        Admin Login
       </button>
     )}
   </AuthConsumer>
