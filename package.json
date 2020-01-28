@@ -9,6 +9,7 @@
     "auth0-js": "^9.12.2",
     "axios": "^0.19.1",
     "body-parser": "^1.19.0",
+    "chalk": "^3.0.0",
     "concurrently": "^5.1.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
@@ -24,9 +25,9 @@
     "react-tap-event-plugin": "^3.0.3"
   },
   "scripts": {
-    "start-js": "react-scripts start",
-    "backend-start": "node backend/server.js",
-    "start": "concurrently \"npm-run-all -p backend-start start-js\"",
+    "client": "react-scripts start",
+    "server": "nodemon backend/server.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
