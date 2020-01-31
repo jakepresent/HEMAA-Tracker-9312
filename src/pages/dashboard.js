@@ -5,26 +5,26 @@ import { AuthConsumer } from "../authContext";
 import Can from "../components/Can";
 import Logout from "../components/Logout";
 import Profile from "../components/Profile";
-import PostsList from "../components/PostsList";
+import AdminActions from "./AdminActions";
 
 const DashboardPage = () => (
+
+
   <AuthConsumer>
-    {({ user }) => (
-      <Can
-        role={user.role}
-        perform="dashboard-page:visit"
-        yes={() => (
+    {({ authenticated }) =>
+      !authenticated ? (
+        <Redirect to="/" />
+      ) : (
           <div>
-            <h1>Dashboard</h1>
+            <h1>Admin Dashboard</h1>
             <Logout />
             <Profile />
-            <PostsList />
+            <AdminActions />
           </div>
-        )}
-        no={() => <Redirect to="/" />}
-      />
-    )}
+        )
+    }
   </AuthConsumer>
+
 );
 
 export default DashboardPage;
