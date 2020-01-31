@@ -16,7 +16,7 @@ class HomePage extends React.Component {
   }
 
   emailIsValid(email) {
-    return /\S+@\S+\.\S+/.test(email)
+    return /\S+@\S+\.\S+/.test(email);
   }
 
   updateEmail(event) {
@@ -32,7 +32,7 @@ class HomePage extends React.Component {
       return;
     }
     event.preventDefault();
-    alert('A name was submitted: ' + this.state.member_email);
+    alert('An email was submitted: ' + this.state.member_email);
     var apiBaseUrl = "http://localhost:4000/api/";
       var payload = {
         "email": this.state.member_email,
@@ -72,7 +72,7 @@ class HomePage extends React.Component {
                   <div className='form-group'>
                     <label>
                     <input
-                      type="email"
+                      type="text"
                       name="email"
                       className="form-control"
                       id="memberEmail"
