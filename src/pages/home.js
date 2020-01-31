@@ -72,7 +72,7 @@ class HomePage extends React.Component {
                 <div className="form-group">
                   <label>
                     <input
-                      type="email"
+                      type="text"
                       name="email"
                       className="form-control"
                       id="memberEmail"
