@@ -1,8 +1,9 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import axios from "axios";
 import { AuthConsumer } from "../authContext";
 import Login from "../components/Login";
+
+const api = require("../api");
 
 class HomePage extends React.Component {
   constructor(props) {
@@ -21,42 +22,39 @@ class HomePage extends React.Component {
 
   updateEmail(event) {
     var email = event.target.value;
-    this.setState({ member_email: email })
+    this.setState({ member_email: email });
     this.setState({ email_message: "" });
   }
 
-  handleSubmit(event) {
+  handleSubmit = async event => {
     if (!this.emailIsValid(this.state.member_email)) {
       this.setState({ email_message: "Please enter a valid email address" });
       event.preventDefault();
       return;
     }
     event.preventDefault();
-    alert('An email was submitted: ' + this.state.member_email);
-    var apiBaseUrl = "http://localhost:4000/api/";
-      var payload = {
-        "email": this.state.member_email,
-      }
-      axios.post(apiBaseUrl + 'member_email', payload)
-        .then(function (response) {
-          console.log(response);
-          if (response.data.code === 200) {
-            console.log("Login successfull");
-          }
-          else if (response.data.code === 204) {
-            console.log("Username password do not match");
-            alert("username password do not match")
-          }
-          else {
-            console.log("Username does not exist");
-            alert("Username does not exist");
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-          window.alert("Could not log in: " + error);
-        });
-  }
+    alert("A name was submitted: " + this.state.member_email);
+
+    api
+      .getMemberByEmail(this.state.member_email)
+      .then(function(response) {
+        if (response.status === 200) {
+          console.log("Login successful");
+          var active = response.data.data.active;
+          alert("Member found! Status: " + (active ? "Active" : "Inactive"));
+        } else if (response.status === 204) {
+          console.log("Member not found");
+          alert("Member not found");
+        } else {
+          console.log("Unknown status");
+          alert("Unknown status");
+        }
+      })
+      .catch(function(error) {
+        console.log(error);
+        window.alert("Error occured: " + error);
+      });
+  };
 
   render() {
     return (
@@ -65,12 +63,14 @@ class HomePage extends React.Component {
           authenticated ? (
             <Redirect to="/dashboard" />
           ) : (
-              <div>
-                <h2>Welcome to the HEMAA Membership Checker!</h2>
-                <h4>Enter an email below to check if that member is registered:</h4>
-                <form onSubmit={this.handleSubmit} noValidate>
-                  <div className='form-group'>
-                    <label>
+            <div>
+              <h2>Welcome to the HEMAA Membership Checker!</h2>
+              <h4>
+                Enter an email below to check if that member is registered:
+              </h4>
+              <form onSubmit={this.handleSubmit} noValidate>
+                <div className="form-group">
+                  <label>
                     <input
                       type="text"
                       name="email"
@@ -78,19 +78,23 @@ class HomePage extends React.Component {
                       id="memberEmail"
                       placeholder="Enter email"
                       onChange={this.updateEmail}
-                      autoFocus />
-                      <span style={{fontSize:14}}className="text-danger">
-                        {this.state.email_message}
-                      </span>
-                    </label>
-                  </div>
-                  <input type="submit" className="btn btn-primary"
-                    value="Submit" />
-                </form>
-                <br />
-                <Login />
-              </div>
-            )
+                      autoFocus
+                    />
+                    <span style={{ fontSize: 14 }} className="text-danger">
+                      {this.state.email_message}
+                    </span>
+                  </label>
+                </div>
+                <input
+                  type="submit"
+                  className="btn btn-primary"
+                  value="Submit"
+                />
+              </form>
+              <br />
+              <Login />
+            </div>
+          )
         }
       </AuthConsumer>
     );
