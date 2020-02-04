@@ -7,6 +7,7 @@ validate = method => {
       return [
         check("email", "Invalid email")
           .exists()
+          .trim()
           .isEmail()
           .normalizeEmail()
       ];
@@ -15,6 +16,7 @@ validate = method => {
       return [
         check("email", "Invalid email")
           .exists()
+          .trim()
           .isEmail()
           .normalizeEmail(),
         check("active").isBoolean()
