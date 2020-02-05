@@ -3,6 +3,9 @@ import auth0 from "auth0-js";
 
 import { AUTH_CONFIG } from "../auth0-variables";
 import { AuthProvider } from "../authContext";
+import { Redirect } from "react-router-dom";
+
+const api = require("../api");
 
 const auth = new auth0.WebAuth({
   domain: AUTH_CONFIG.domain,
@@ -21,8 +24,14 @@ class Auth extends Component {
     accessToken: ""
   };
 
-  initiateLogin = () => {
-    auth.authorize();
+  initiateLogin = (email, password) => {
+    //auth.authorize();
+    //api.dosomething
+    if (false){
+        this.setState({authenticated : true});
+        return (<Redirect to="/dashboard" />);
+    }
+    return "error message";
   };
 
   logout = () => {

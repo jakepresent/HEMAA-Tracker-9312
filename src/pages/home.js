@@ -16,7 +16,8 @@ class HomePage extends React.Component {
       admin_logging_in: false,
       admin_email: "",
       admin_password: "",
-      admin_email_message: ""
+      admin_email_message: "",
+      admin_status_message: ""
     };
     this.updateText = this.updateText.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -75,7 +76,8 @@ class HomePage extends React.Component {
     event.preventDefault();
     var email = this.state.admin_email;
     var password = this.state.admin_password;
-    loginFunction();
+    var message = loginFunction(email, password);
+    this.setState({ admin_status_message: message })
     /*api
       .getMemberByEmail(email)
       .then((response) => {
@@ -201,6 +203,13 @@ class HomePage extends React.Component {
                             value="Submit"
                           />
                         </form>
+                        <div>
+                          <br />
+                          <h4>
+                            {this.state.admin_status_message}
+                          </h4>
+                          <br />
+                        </div>
                       </div>
                     )
                 }
