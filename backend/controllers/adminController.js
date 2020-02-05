@@ -1,15 +1,19 @@
+const bcrypt = require("bcrypt")
 const Admin = require("../models/Admin");
 
+createAdmin = (req, res) => {
+  return res.status(501).json({
+    message: "Not implemented"
+  })
+};
+
 loginAdmin = (req, res) => {
-  // TODO: Implement login functionality
+  return res.status(501).json({
+    message: "Not implemented"
+  });
 };
 
-getSaltAndHash = email => {
-  // TODO: Fetch the admin's salt and hashed password
-  // returns {salt: ..., expected_hash: ...}
-};
-
-hash = (password, salt) => {
-  // TODO: hash & salt the plain text password for storage in database
-  // returns string: hashed password
+module.exports = {
+  createAdmin,
+  loginAdmin
 };
