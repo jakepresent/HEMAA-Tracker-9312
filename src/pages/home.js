@@ -12,7 +12,6 @@ class HomePage extends React.Component {
       email: "",
       email_message: "",
       status_message: "",
-      admin_button_text: "Admin Login",
       admin_logging_in: false,
       admin_email: "",
       admin_password: "",
@@ -25,6 +24,7 @@ class HomePage extends React.Component {
   }
 
   emailIsValid(email) {
+    return true;
     return /\S+@\S+\.\S+/.test(email);
   }
 
@@ -77,42 +77,18 @@ class HomePage extends React.Component {
     var email = this.state.admin_email;
     var password = this.state.admin_password;
     var message = loginFunction(email, password);
-    this.setState({ admin_status_message: message })
-    /*api
-      .getMemberByEmail(email)
-      .then((response) => {
-        var message = "";
-        if (response.status === 200) {
-          console.log("Login successful");
-          var active = response.data.data.active;
-          message = email + " is an " + (active ? "active" : "inactive") + " member";
-        } else if (response.status === 204) {
-          console.log("Member not found");
-          message = email + " was not found"
-        } else {
-          console.log("Unknown status");
-          message = email + ": unknown status";
-        }
-        this.setState({ status_message: message });
-      })
-      .catch(function (error) {
-        console.log(error);
-        window.alert("Error occured: " + error);
-      });*/
-
+    this.setState({ admin_status_message: message });
   };
 
   clickAdminLogin(event) {
     var button = document.getElementById("adminLogin");
     if (!this.state.admin_logging_in) {
       this.setState({
-        admin_button_text: "Back",
         admin_logging_in: true
       });
       button.className = "btn btn-sm btn-secondary";
     } else {
       this.setState({
-        admin_button_text: "Admin Login",
         admin_logging_in: false
       });
       button.className = "btn btn-sm btn-primary";
@@ -162,8 +138,9 @@ class HomePage extends React.Component {
                   <br />
                 </div>
                 <button id="adminLogin" className="btn btn-sm btn-primary" onClick={this.clickAdminLogin}>
-                  {this.state.admin_button_text}
-                </button>
+                  {this.state.admin_logging_in ?
+                    "Back" : "Admin Login"}
+                </button> 
                 {
                   !this.state.admin_logging_in ? (
                     <div></div>

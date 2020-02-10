@@ -27,7 +27,7 @@ class Auth extends Component {
   initiateLogin = (email, password) => {
     //auth.authorize();
     //api.dosomething
-    if (false){
+    if (true){
         this.setState({authenticated : true});
         return (<Redirect to="/dashboard" />);
     }
