@@ -37,7 +37,7 @@ class HomePage extends React.Component {
 
     api
       .getMemberByEmail(this.state.member_email)
-      .then(function(response) {
+      .then(function (response) {
         if (response.status === 200) {
           console.log("Login successful");
           var active = response.data.data.active;
@@ -50,7 +50,7 @@ class HomePage extends React.Component {
           alert("Unknown status");
         }
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
         window.alert("Error occured: " + error);
       });
@@ -58,45 +58,47 @@ class HomePage extends React.Component {
 
   render() {
     return (
-      <AuthConsumer>
-        {({ authenticated }) =>
-          authenticated ? (
-            <Redirect to="/dashboard" />
-          ) : (
-            <div>
-              <h2>Welcome to the HEMAA Membership Checker!</h2>
-              <h4>
-                Enter an email below to check if that member is registered:
+      <div className="jumbotron">
+        <AuthConsumer>
+          {({ authenticated }) =>
+            authenticated ? (
+              <Redirect to="/dashboard" />
+            ) : (
+                <div>
+                  <h2>Welcome to the HEMAA Membership Checker!</h2>
+                  <h4>
+                    Enter an email below to check if that member is registered:
               </h4>
-              <form onSubmit={this.handleSubmit} noValidate>
-                <div className="form-group">
-                  <label>
+                  <form onSubmit={this.handleSubmit} noValidate>
+                    <div className="form-group">
+                      <label>
+                        <input
+                          type="text"
+                          name="email"
+                          className="form-control"
+                          id="memberEmail"
+                          placeholder="Enter email"
+                          onChange={this.updateEmail}
+                          autoFocus
+                        />
+                        <span style={{ fontSize: 14 }} className="text-danger">
+                          {this.state.email_message}
+                        </span>
+                      </label>
+                    </div>
                     <input
-                      type="text"
-                      name="email"
-                      className="form-control"
-                      id="memberEmail"
-                      placeholder="Enter email"
-                      onChange={this.updateEmail}
-                      autoFocus
+                      type="submit"
+                      className="btn btn-primary"
+                      value="Submit"
                     />
-                    <span style={{ fontSize: 14 }} className="text-danger">
-                      {this.state.email_message}
-                    </span>
-                  </label>
+                  </form>
+                  <br />
+                  <Login />
                 </div>
-                <input
-                  type="submit"
-                  className="btn btn-primary"
-                  value="Submit"
-                />
-              </form>
-              <br />
-              <Login />
-            </div>
-          )
-        }
-      </AuthConsumer>
+              )
+          }
+        </AuthConsumer>
+      </div>
     );
   }
 }

@@ -20,7 +20,7 @@ class DashboardPage extends React.Component {
 
       <AuthConsumer>
         
-        {({ authenticated }) =>
+        {({ authenticated, logout }) =>
           !authenticated ? (
             <Redirect to="/" />
           ) : (
@@ -37,7 +37,7 @@ class DashboardPage extends React.Component {
                 </div>
               </div>
 
-                <button onClick= {this.logout} type="button" id="logoutButton" className="btn btn-floating btn-danger float-right">Logout</button>
+                <button onClick= {logout} type="button" id="logoutButton" className="btn btn-floating btn-danger float-right">Logout</button>
 
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
