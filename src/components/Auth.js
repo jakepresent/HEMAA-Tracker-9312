@@ -22,11 +22,13 @@ class Auth extends Component {
     user: {
       role: "visitor"
     },
-    accessToken: ""
+    accessToken: "",
+    authenticating_message: ""
   };
 
   initiateLogin = (email, password) => {
     // auth.authorize();
+    this.setState({authenticating_message: "Loading..."});
     var login_info = { email: email, password: password };
     api
       .getAdminByEmailandPassword(login_info)
@@ -34,11 +36,11 @@ class Auth extends Component {
         if (response.status === 200) {
           console.log("Login successful");
           this.setState({ authenticated: true });
-          return <Redirect to="/dashboard" />;
+          this.setState({authenticating_message: <Redirect to="/dashboard" />}); 
         }
       })
-      .catch(function(error) {
-        window.alert("Login attempt failed");
+      .catch(error => {
+        this.setState({authenticating_message: "Login attempt failed"})
       });
   };
 
@@ -51,6 +53,12 @@ class Auth extends Component {
       accessToken: ""
     });
   };
+
+  reset = () => {
+    this.setState({
+      authenticating_message: ""
+    })
+  }
 
   handleAuthentication = () => {
     auth.parseHash((error, authResult) => {
@@ -82,7 +90,9 @@ class Auth extends Component {
       ...this.state,
       initiateLogin: this.initiateLogin,
       handleAuthentication: this.handleAuthentication,
-      logout: this.logout
+      logout: this.logout,
+      reset: this.reset,
+      authenticating_message: this.state.authenticating_message
     };
     return (
       <AuthProvider value={authProviderValue}>

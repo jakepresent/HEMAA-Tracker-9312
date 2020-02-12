@@ -28,7 +28,7 @@ class HomePage extends React.Component {
     return /\S+@\S+\.\S+/.test(email);
   }
 
-  updateText(event) {
+  updateText = resetFunction => async event => {
     console.log(event);
     const {
       target: { name, value }
@@ -36,6 +36,8 @@ class HomePage extends React.Component {
     var email = event.target.value;
     this.setState({ [name]: event.target.value });
     this.setState({ email_message: "", admin_email_message: "" });
+    this.setState({ admin_status_message: "" });
+    resetFunction();
   }
 
   handleSubmit = async event => {
@@ -81,11 +83,11 @@ class HomePage extends React.Component {
     event.preventDefault();
     var email = this.state.admin_email;
     var password = this.state.admin_password;
-    var message = loginFunction(email, password);
-    this.setState({ admin_status_message: message });
+    loginFunction(email, password);
   };
 
-  clickAdminLogin(event) {
+  clickAdminLogin = resetFunction => async event => {
+    resetFunction();
     var button = document.getElementById("adminLogin");
     if (!this.state.admin_logging_in) {
       this.setState({
@@ -105,7 +107,7 @@ class HomePage extends React.Component {
   render() {
     return (
       <AuthConsumer>
-        {({ authenticated, initiateLogin }) =>
+        {({ authenticated, initiateLogin, authenticating_message, reset }) =>
           authenticated ? (
             <Redirect to="/dashboard" />
           ) : (
@@ -123,7 +125,7 @@ class HomePage extends React.Component {
                       className="form-control"
                       id="memberEmail"
                       placeholder="Enter email"
-                      onChange={this.updateText}
+                      onChange={this.updateText(reset)}
                       autoFocus
                     />
                     <span style={{ fontSize: 14 }} className="text-danger">
@@ -145,7 +147,7 @@ class HomePage extends React.Component {
               <button
                 id="adminLogin"
                 className="btn btn-sm btn-primary"
-                onClick={this.clickAdminLogin}
+                onClick={this.clickAdminLogin(reset)}
               >
                 {this.state.admin_button_text}
               </button>
@@ -156,7 +158,7 @@ class HomePage extends React.Component {
                   <br />
                   <h5>Admin Login</h5>
                   <form
-                    onSubmit={this.handleAdminSubmit(initiateLogin)}
+                    onSubmit={this.handleAdminSubmit(initiateLogin, reset)}
                     noValidate
                   >
                     <div className="form-group">
@@ -166,7 +168,7 @@ class HomePage extends React.Component {
                           name="admin_email"
                           className="form-control"
                           placeholder="Enter admin email"
-                          onChange={this.updateText}
+                          onChange={this.updateText(reset)}
                           autoFocus
                         />
                         <span style={{ fontSize: 14 }} className="text-danger">
@@ -180,7 +182,7 @@ class HomePage extends React.Component {
                           name="admin_password"
                           className="form-control"
                           placeholder="Enter admin password"
-                          onChange={this.updateText}
+                          onChange={this.updateText(reset)}
                         />
                       </label>
                     </div>
@@ -192,7 +194,7 @@ class HomePage extends React.Component {
                   </form>
                   <div>
                     <br />
-                    <h4>{this.state.admin_status_message}</h4>
+                    <h4>{authenticating_message}</h4>
                     <br />
                   </div>
                 </div>
