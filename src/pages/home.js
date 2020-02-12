@@ -12,7 +12,6 @@ class HomePage extends React.Component {
       email: "",
       email_message: "",
       status_message: "",
-      admin_button_text: "Admin Login",
       admin_logging_in: false,
       admin_email: "",
       admin_password: "",
@@ -25,6 +24,7 @@ class HomePage extends React.Component {
   }
 
   emailIsValid(email) {
+    return true;
     return /\S+@\S+\.\S+/.test(email);
   }
 
@@ -91,13 +91,11 @@ class HomePage extends React.Component {
     var button = document.getElementById("adminLogin");
     if (!this.state.admin_logging_in) {
       this.setState({
-        admin_button_text: "Back",
         admin_logging_in: true
       });
       button.className = "btn btn-sm btn-secondary";
     } else {
       this.setState({
-        admin_button_text: "Admin Login",
         admin_logging_in: false
       });
       button.className = "btn btn-sm btn-primary";

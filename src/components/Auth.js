@@ -27,7 +27,6 @@ class Auth extends Component {
   };
 
   initiateLogin = (email, password) => {
-    // auth.authorize();
     this.setState({authenticating_message: "Loading..."});
     var login_info = { email: email, password: password };
     api
