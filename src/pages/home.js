@@ -24,7 +24,6 @@ class HomePage extends React.Component {
   }
 
   emailIsValid(email) {
-    return true;
     return /\S+@\S+\.\S+/.test(email);
   }
 
@@ -66,7 +65,7 @@ class HomePage extends React.Component {
         }
         this.setState({ status_message: message });
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
         window.alert("Error occured: " + error);
       });
@@ -102,6 +101,10 @@ class HomePage extends React.Component {
     }
   }
 
+  autoLogin = loginFunction => async event => {
+    loginFunction("admin@hemaa.com", "letmein");
+  }
+
   render() {
     return (
       <AuthConsumer>
@@ -109,97 +112,102 @@ class HomePage extends React.Component {
           authenticated ? (
             <Redirect to="/dashboard" />
           ) : (
-            <div>
-              <h2>Welcome to the HEMAA Membership Checker!</h2>
-              <h5>
-                Enter an email below to check if that member is registered
-              </h5>
-              <form onSubmit={this.handleSubmit} noValidate>
-                <div className="form-group">
-                  <label>
-                    <input
-                      type="text"
-                      name="email"
-                      className="form-control"
-                      id="memberEmail"
-                      placeholder="Enter email"
-                      onChange={this.updateText(reset)}
-                      autoFocus
-                    />
-                    <span style={{ fontSize: 14 }} className="text-danger">
-                      {this.state.email_message}
-                    </span>
-                  </label>
-                </div>
-                <input
-                  type="submit"
-                  className="btn btn-primary"
-                  value="Submit"
-                />
-              </form>
               <div>
-                <br />
-                <h4>{this.state.status_message}</h4>
-                <br />
-              </div>
-              <button
-                id="adminLogin"
-                className="btn btn-sm btn-primary"
-                onClick={this.clickAdminLogin(reset)}
-              >
-                {this.state.admin_logging_in ?
-                    "Back" : "Admin Login"}
-              </button>
-              {!this.state.admin_logging_in ? (
-                <div></div>
-              ) : (
+                <h2>Welcome to the HEMAA Membership Checker!</h2>
+                <h5>
+                  Enter an email below to check if that member is registered
+              </h5>
+                <form onSubmit={this.handleSubmit} noValidate>
+                  <div className="form-group">
+                    <label>
+                      <input
+                        type="text"
+                        name="email"
+                        className="form-control"
+                        id="memberEmail"
+                        placeholder="Enter email"
+                        onChange={this.updateText(reset)}
+                        autoFocus
+                      />
+                      <span style={{ fontSize: 14 }} className="text-danger">
+                        {this.state.email_message}
+                      </span>
+                    </label>
+                  </div>
+                  <input
+                    type="submit"
+                    className="btn btn-primary"
+                    value="Submit"
+                  />
+                </form>
                 <div>
                   <br />
-                  <h5>Admin Login</h5>
-                  <form
-                    onSubmit={this.handleAdminSubmit(initiateLogin, reset)}
-                    noValidate
-                  >
-                    <div className="form-group">
-                      <label>
-                        <input
-                          type="text"
-                          name="admin_email"
-                          className="form-control"
-                          placeholder="Enter admin email"
-                          onChange={this.updateText(reset)}
-                          autoFocus
-                        />
-                        <span style={{ fontSize: 14 }} className="text-danger">
-                          {this.state.admin_email_message}
-                        </span>
-                      </label>
-                      <br />
-                      <label>
-                        <input
-                          type="password"
-                          name="admin_password"
-                          className="form-control"
-                          placeholder="Enter admin password"
-                          onChange={this.updateText(reset)}
-                        />
-                      </label>
-                    </div>
-                    <input
-                      type="submit"
-                      className="btn btn-primary"
-                      value="Submit"
-                    />
-                  </form>
-                  <div>
-                    <br />
-                    <h4>{authenticating_message}</h4>
-                    <br />
-                  </div>
+                  <h4>{this.state.status_message}</h4>
+                  <br />
                 </div>
-              )}
-            </div>
-          )
+                <button
+                  id="adminLogin"
+                  className="btn btn-sm btn-primary"
+                  onClick={this.clickAdminLogin(reset)}
+                >
+                  {this.state.admin_logging_in ?
+                    "Back" : "Admin Login"}
+                </button>
+                {!this.state.admin_logging_in ? (
+                  <div></div>
+                ) : (
+                    <div>
+                      <br />
+                      <h5>Admin Login</h5>
+                      <form
+                        onSubmit={this.handleAdminSubmit(initiateLogin, reset)}
+                        noValidate
+                      >
+                        <div className="form-group">
+                          <label>
+                            <input
+                              type="text"
+                              name="admin_email"
+                              className="form-control"
+                              placeholder="Enter admin email"
+                              onChange={this.updateText(reset)}
+                              autoFocus
+                            />
+                            <span style={{ fontSize: 14 }} className="text-danger">
+                              {this.state.admin_email_message}
+                            </span>
+                          </label>
+                          <br />
+                          <label>
+                            <input
+                              type="password"
+                              name="admin_password"
+                              className="form-control"
+                              placeholder="Enter admin password"
+                              onChange={this.updateText(reset)}
+                            />
+                          </label>
+                        </div>
+                        <input
+                          type="submit"
+                          className="btn btn-primary"
+                          value="Submit"
+                        />
+                      </form>
+                      <div>
+                        <br />
+                        <h4>{authenticating_message}</h4>
+                        <br />
+                      </div>
+                      <button
+                        id="adminLogin"
+                        className="btn btn-sm btn-primary"
+                        onClick={this.autoLogin(initiateLogin)}
+                      >Bypass admin authentication</button>
+                    </div>
+                  )}
+              </div>
+            )
         }
       </AuthConsumer>
     );
