@@ -4,6 +4,7 @@ import auth0 from "auth0-js";
 import { AUTH_CONFIG } from "../auth0-variables";
 import { AuthProvider } from "../authContext";
 import { Redirect } from "react-router-dom";
+import { json } from "body-parser";
 
 const api = require("../api");
 
@@ -25,13 +26,20 @@ class Auth extends Component {
   };
 
   initiateLogin = (email, password) => {
-    //auth.authorize();
-    //api.dosomething
-    if (false){
-        this.setState({authenticated : true});
-        return (<Redirect to="/dashboard" />);
-    }
-    return "error message";
+    // auth.authorize();
+    var login_info = { email: email, password: password };
+    api
+      .getAdminByEmailandPassword(login_info)
+      .then(response => {
+        if (response.status === 200) {
+          console.log("Login successful");
+          this.setState({ authenticated: true });
+          return <Redirect to="/dashboard" />;
+        }
+      })
+      .catch(function(error) {
+        window.alert("Login attempt failed");
+      });
   };
 
   logout = () => {
