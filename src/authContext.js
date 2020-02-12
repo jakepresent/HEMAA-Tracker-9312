@@ -6,7 +6,9 @@ const authContext = createContext({
   accessToken: "", // accessToken of user for Auth0
   initiateLogin: () => {}, // to start the login process
   handleAuthentication: () => {}, // handle Auth0 login process
-  logout: () => {} // logout the user
+  logout: () => {}, // logout the user
+  reset: () => {},
+  authenticating_message: ""
 });
 
 export const AuthProvider = authContext.Provider;
