@@ -1,0 +1,74 @@
+/* The sidebar menu */
+.sidenav {
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    width: 180px; /* Set the width of the sidebar */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    left: 0;
+    background-color: black;
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 20px;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    margin-top: 7%;
+  }
+  
+  /* The navigation menu links */
+  .sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: rgb(196, 192, 192);
+    display: block;
+  }
+  
+  /* When you mouse over the navigation links, change their color */
+  .sidenav a:hover {
+    color: #f1f1f1;
+  }
+  
+  /* Style page content */
+  .main {
+    margin-left: 160px; /* Same as the width of the sidebar */
+    padding: 0px 10px;
+  }
+  
+  /* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+  @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+  }
+  
+/* Style the header
+.header {
+    padding: 17px 30px;
+    background: #555;
+    color: #f1f1f1;
+  }
+  
+
+  
+  /* The sticky class is added to the header with JS when it reaches its scroll position */
+  .sticky {
+    position: fixed;
+    top: 0;
+    width: 100%
+  }
+  
+  /* Add some top padding to the page content to prevent sudden quick movement (as the header gets a new position at the top of the page (position:fixed and top:0) */
+  .sticky + .content {
+    padding-top: 102px;
+  }
+
+  #logoutButton {
+    margin-top: 8%;
+  }
+
+  .logoutB {
+    right: 80%;
+  }
+
+  hr {
+    border: 1px solid white;
+    width: 170px;
+  }

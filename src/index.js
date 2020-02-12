@@ -7,11 +7,12 @@ import DashboardPage from "./pages/dashboard";
 import CallbackPage from "./pages/callback";
 import Auth from "./components/Auth";
 
+
 function App() {
   return (
     <div className="App container">
       <Auth>
-        <div className="jumbotron">
+        <div>
           <Router>
             <Switch>
               <Route exact path="/" component={HomePage} />
