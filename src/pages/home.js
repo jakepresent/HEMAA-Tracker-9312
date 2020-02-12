@@ -147,7 +147,8 @@ class HomePage extends React.Component {
                 className="btn btn-sm btn-primary"
                 onClick={this.clickAdminLogin(reset)}
               >
-                {this.state.admin_button_text}
+                {this.state.admin_logging_in ?
+                    "Back" : "Admin Login"}
               </button>
               {!this.state.admin_logging_in ? (
                 <div></div>
