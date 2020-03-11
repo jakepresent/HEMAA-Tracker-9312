@@ -5,7 +5,7 @@ import { AuthConsumer } from "../authContext";
 import Can from "../components/Can";
 import Logout from "../components/Logout";
 import Profile from "../components/Profile";
-import AdminActions from "./AdminActions";
+import AdminActions from "./AdminActions"; ~
 
 const DashboardPage = () => (
 
