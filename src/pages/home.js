@@ -106,6 +106,7 @@ class HomePage extends React.Component {
   }
 
   tidyLogin = async event => {
+    api.loginAdmin();
     this.setState({ email_message : <Redirect to="/testpage" />})
   }
 

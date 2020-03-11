@@ -1,95 +1,42 @@
-const Admin = require("../models/Admin");
-const bcrypt = require("bcrypt");
+const client_id = require("../config/keys").clientID;
+const client_secret = require("../config/keys").clientSecret;
+const redirect_url = "http://localhost:3000/dashboard";
+const auth_url = "https://accounts.tidyhq.com/oauth/authorize";
 
-const saltRounds = 10; // 2^10 rounds
-
-//create an admin --> requires email and password unlike the member which is just an email
-
-createAdmin = (req, res) => {
-  const body = req.body;
-
-  if (!body || !body.email || !body.password) {
-    return res.status(400).json({
-      success: false,
-      error: "You must provide an email and a password."
-    });
+const credentials = {
+  client: {
+    id: client_id,
+    secret: client_secret
+  },
+  auth: {
+    tokenHost: auth_url
   }
+};
 
-  bcrypt.hash(body.password, saltRounds, function(err, hash) {
-    if (err) {
-      console.log(err);
-      return res.status(400).json({
-        success: false,
-        error: "Failed to create hashed password."
-      });
-    }
-
-    const admin = new Admin({ email: body.email, password: hash });
-    if (!admin) {
-      return res.status(400).json({ success: false, error: err });
-    }
-
-    admin
-      .save()
-      .then(() => {
-        return res.status(200).json({
-          success: true,
-          email: admin.email,
-          message: "Admin successfully created!"
-        });
-      })
-      .catch(error => {
-        return res.status(400).json({
-          error,
-          message: "Failed to create an admin."
-        });
-      });
+loginAdmin = async (req, res) => {
+  const oauth2 = require('simple-oauth2').create(credentials);
+  
+  const authorizationUri = oauth2.authorizationCode.authorizeURL({
+    redirect_uri: redirect_url
   });
-};
-
-getAdminByEmailandPassword = async (req, res) => {
-  var body = req.body;
-
-  if (!body || !body.email || !body.password) {
-    return res.status(400).json({
-      success: false,
-      error: "You must provide an email and a password."
-    });
+  
+  res.redirect(authorizationUri);
+  
+  const tokenConfig = {
+    code: '<code>',
+    redirect_uri: 'http://localhost:3000/dashboard',
+    scope: '<scope>',
+  };
+  
+  try {
+    const result = await oauth2.authorizationCode.getToken(tokenConfig);
+    const accessToken = oauth2.accessToken.create(result);
+    return accessToken;
+  } catch (error) {
+    console.log('Access Token Error', error.message);
   }
-
-  var email = body.email;
-  var plain_password = body.password;
-
-  //Search by email
-  await Admin.findOne({ email: email }, (err, admin) => {
-    //This checks if there was an error in retrieving the admin
-    if (err) {
-      return res.status(400).json({ success: false, error: err });
-    }
-    //If the admin's email does not exist in the database
-    if (!admin) {
-      return res
-        .status(401)
-        .json({ success: false, message: "Email not found" });
-    }
-
-    var hash = admin.password;
-
-    bcrypt.compare(plain_password, hash, function(err, result) {
-      if (result == true) {
-        return res
-          .status(200)
-          .json({ success: true, message: "Successfully logged in" });
-      } else {
-        return res
-          .status(401)
-          .json({ success: false, message: "Incorrect password" });
-      }  
-    });
-  }).catch(err => console.log(err));
-};
+}
 
 module.exports = {
-  createAdmin,
-  getAdminByEmailandPassword
+  loginAdmin
 };
