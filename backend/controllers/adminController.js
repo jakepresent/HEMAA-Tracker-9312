@@ -1,3 +1,4 @@
+const keys = require("../config/keys")
 const Admin = require("../models/Admin");
 const bcrypt = require("bcrypt");
 
@@ -15,7 +16,7 @@ createAdmin = (req, res) => {
     });
   }
 
-  bcrypt.hash(body.password, saltRounds, function(err, hash) {
+  bcrypt.hash(body.password, saltRounds, function (err, hash) {
     if (err) {
       console.log(err);
       return res.status(400).json({
@@ -75,7 +76,7 @@ getAdminByEmailandPassword = async (req, res) => {
 
     var hash = admin.password;
 
-    bcrypt.compare(plain_password, hash, function(err, result) {
+    bcrypt.compare(plain_password, hash, function (err, result) {
       if (result == true) {
         return res
           .status(200)
@@ -84,10 +85,12 @@ getAdminByEmailandPassword = async (req, res) => {
         return res
           .status(401)
           .json({ success: false, message: "Incorrect password" });
-      }  
+      }
     });
   }).catch(err => console.log(err));
 };
+
+
 
 module.exports = {
   createAdmin,
