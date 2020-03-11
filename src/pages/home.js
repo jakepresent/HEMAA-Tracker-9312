@@ -105,6 +105,10 @@ class HomePage extends React.Component {
     loginFunction("admin@hemaa.com", "letmein");
   }
 
+  tidyLogin = async event => {
+    this.setState({ email_message : <Redirect to="/testpage" />})
+  }
+
   render() {
     return (
       <AuthConsumer>
@@ -206,6 +210,10 @@ class HomePage extends React.Component {
                       >Bypass admin authentication</button>
                     </div>
                   )}
+                  <button
+                  onClick={this.tidyLogin}>
+                    TidyHQ Login
+                  </button>
               </div>
             )
         }
