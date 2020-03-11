@@ -8,8 +8,6 @@ import Profile from "../components/Profile";
 import AdminActions from "./AdminActions"; ~
 
 const DashboardPage = () => (
-
-
   <AuthConsumer>
     {({ authenticated }) =>
       !authenticated ? (

@@ -57,15 +57,25 @@ class AdminActions extends React.Component {
 
         <p>List of members last updated on: {(new Date(adminInfo.lastUpdated)).toDateString()}</p>
         <button id="csvButton"
+<<<<<<< HEAD
           className="btn btn-sm btn-primary"
           onClick={this.clickCSV}>
+=======
+            className="btn btn-sm btn-primary"
+            onClick={this.clickCSV}>
+>>>>>>> origin/master
           {this.state.csv_button_clicked ?
             "Back" : "Upload member list (*.csv)"}
         </button>
         <br />
         <button id="adminListButton"
+<<<<<<< HEAD
           className="btn btn-sm btn-primary"
           onClick={this.clickAdminList}>
+=======
+            className="btn btn-sm btn-primary"
+            onClick={this.clickAdminList}>
+>>>>>>> origin/master
           {this.state.admin_list_button_clicked ?
             "Back" : "View Admins List"}
         </button>
@@ -74,15 +84,25 @@ class AdminActions extends React.Component {
           !this.state.csv_button_clicked ? (
             <div></div>
           ) : (
+<<<<<<< HEAD
               <CsvUpload />
             )
+=======
+            <CsvUpload />
+          )
+>>>>>>> origin/master
         }
         {
           !this.state.admin_list_button_clicked ? (
             <div></div>
           ) : (
+<<<<<<< HEAD
               <AdminList />
             )
+=======
+            <AdminList />
+          )
+>>>>>>> origin/master
         }
       </div>
     );

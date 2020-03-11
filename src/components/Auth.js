@@ -4,6 +4,7 @@ import auth0 from "auth0-js";
 import { AUTH_CONFIG } from "../auth0-variables";
 import { AuthProvider } from "../authContext";
 import { Redirect } from "react-router-dom";
+import { json } from "body-parser";
 
 const api = require("../api");
 
@@ -21,17 +22,25 @@ class Auth extends Component {
     user: {
       role: "visitor"
     },
-    accessToken: ""
+    accessToken: "",
+    authenticating_message: ""
   };
 
   initiateLogin = (email, password) => {
-    //auth.authorize();
-    //api.dosomething
-    if (false){
-        this.setState({authenticated : true});
-        return (<Redirect to="/dashboard" />);
-    }
-    return "error message";
+    this.setState({authenticating_message: "Loading..."});
+    var login_info = { email: email, password: password };
+    api
+      .getAdminByEmailandPassword(login_info)
+      .then(response => {
+        if (response.status === 200) {
+          console.log("Login successful");
+          this.setState({ authenticated: true });
+          this.setState({authenticating_message: <Redirect to="/dashboard" />}); 
+        }
+      })
+      .catch(error => {
+        this.setState({authenticating_message: "Login attempt failed"})
+      });
   };
 
   logout = () => {
@@ -43,6 +52,12 @@ class Auth extends Component {
       accessToken: ""
     });
   };
+
+  reset = () => {
+    this.setState({
+      authenticating_message: ""
+    })
+  }
 
   handleAuthentication = () => {
     auth.parseHash((error, authResult) => {
@@ -74,7 +89,9 @@ class Auth extends Component {
       ...this.state,
       initiateLogin: this.initiateLogin,
       handleAuthentication: this.handleAuthentication,
-      logout: this.logout
+      logout: this.logout,
+      reset: this.reset,
+      authenticating_message: this.state.authenticating_message
     };
     return (
       <AuthProvider value={authProviderValue}>
