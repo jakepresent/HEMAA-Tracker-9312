@@ -8,7 +8,6 @@ const Profile = () => (
       <div>
         <h2>User Profile</h2>
         <ul>
-          <li>ID: {user.id}</li>
           <li>Email: {user.email}</li>
           <li>Role: {user.role}</li>
         </ul>
