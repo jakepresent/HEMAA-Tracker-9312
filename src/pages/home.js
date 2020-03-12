@@ -105,10 +105,19 @@ class HomePage extends React.Component {
     loginFunction("admin@hemaa.com", "letmein");
   }
 
-  tidyLogin = async event => {
+
+  handleTidyHQLogin = redirectFunction => async event => {
+    event.preventDefault();
     api.loginAdmin();
-    this.setState({ email_message : <Redirect to="/testpage" />})
+    this.setState({ email_message: <Redirect to="http://localhost:3000/testpage" /> })
   }
+
+  // tidyLogin = async event => {
+  //   var button = document.getElementById("tidyLogin");
+  //   api.loginAdmin();
+  //   this.setState()
+  //   // this.setState({ email_message: <Redirect to="https://accounts.tidyhq.com/oauth/authorize" /> })
+  // }
 
   render() {
     return (
@@ -211,9 +220,10 @@ class HomePage extends React.Component {
                       >Bypass admin authentication</button>
                     </div>
                   )}
-                  <button
-                  onClick={this.tidyLogin}>
-                    TidyHQ Login
+                <button
+                  id="tidyLogin"
+                  onClick={this.handleTidyHQLogin}>
+                  TidyHQ Login
                   </button>
               </div>
             )
