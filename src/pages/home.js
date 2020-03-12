@@ -105,11 +105,6 @@ class HomePage extends React.Component {
     loginFunction("balkrishna.patel49@gatech.edu", "TeamJDB9312");
   }
 
-  tidyLogin = async event => {
-    api.loginAdmin();
-    this.setState({ email_message : <Redirect to="/testpage" />})
-  }
-
   render() {
     return (
       <AuthConsumer>
