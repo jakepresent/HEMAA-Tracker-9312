@@ -1,3 +1,4 @@
+const axios = require("axios").default;
 const Member = require("../models/Member");
 const { check, validationResult } = require("express-validator");
 
@@ -9,53 +10,9 @@ validate = method => {
           .exists()
           .trim()
           .isEmail()
-          .normalizeEmail()
-      ];
-    }
-    case "createMember": {
-      return [
-        check("email", "Invalid email")
-          .exists()
-          .trim()
-          .isEmail()
-          .normalizeEmail(),
-        check("active").isBoolean()
       ];
     }
   }
-};
-
-createMember = (req, res) => {
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    res.status(422).json({ errors: errors.array() });
-    return;
-  }
-
-  const body = req.body;
-  const member = new Member(body);
-
-  if (!member) {
-    return res.status(400).json({ success: false, error: err });
-  }
-
-  member
-    .save()
-    .then(() => {
-      return res.status(200).json({
-        success: true,
-        email: member.email,
-        status: member.active,
-        message: "Member successfully created!"
-      });
-    })
-    .catch(error => {
-      return res.status(400).json({
-        error,
-        message: "Failed to create member!"
-      });
-    });
 };
 
 getMemberByEmail = async (req, res) => {
@@ -79,8 +36,52 @@ getMemberByEmail = async (req, res) => {
   }).catch(err => console.log(err));
 };
 
+updateMembers = async (req, res) => {
+  var token = req.headers.authorization;
+  // Get list of members from TidyHQ
+  axios
+    .get("https://api.tidyhq.com/v1/contacts", {
+      headers: {
+        authorization: token
+      }
+    })
+    .then(response => {
+      // Filter out all fields except email and status
+      var membersArray = [];
+      response.data.forEach(function(member) {
+        membersArray.push({
+          email: member.email_address,
+          active: member.status == "active"
+        });
+      });
+
+      // Create members if they do not exist, otherwise update
+      membersArray.forEach(function(data) {
+        Member.findOneAndUpdate(
+          { email: data.email },
+          data,
+          { upsert: true },
+          function(err, res) {
+            if (err) {
+              console.log(err);
+            }
+          }
+        );
+      });
+      // Return response with array of member JSONs
+      return res.status(200).json({ success: true, members: membersArray });
+    })
+    .catch(error => {
+      return res.status(400).json({
+        success: false,
+        message: "Failed to get members",
+        error: error
+      });
+    });
+};
+
 module.exports = {
   validate,
-  createMember,
-  getMemberByEmail
+  getMemberByEmail,
+  updateMembers
 };
