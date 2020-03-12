@@ -1,41 +1,33 @@
+const axios = require("axios").default;
 const client_id = require("../config/keys").clientID;
 const client_secret = require("../config/keys").clientSecret;
-const redirect_url = "http://localhost:3000/dashboard";
-const auth_url = "https://accounts.tidyhq.com/oauth/authorize";
-
-const credentials = {
-  client: {
-    id: client_id,
-    secret: client_secret
-  },
-  auth: {
-    tokenHost: auth_url
-  }
-};
 
 loginAdmin = async (req, res) => {
-  const oauth2 = require('simple-oauth2').create(credentials);
-  
-  const authorizationUri = oauth2.authorizationCode.authorizeURL({
-    redirect_uri: redirect_url
-  });
-  
-  res.redirect(authorizationUri);
-  
-  const tokenConfig = {
-    code: '<code>',
-    redirect_uri: 'http://localhost:3000/dashboard',
-    scope: '<scope>',
-  };
-  
-  try {
-    const result = await oauth2.authorizationCode.getToken(tokenConfig);
-    const accessToken = oauth2.accessToken.create(result);
-    return accessToken;
-  } catch (error) {
-    console.log('Access Token Error', error.message);
-  }
-}
+  axios
+    .post("https://accounts.tidyhq.com/oauth/token", null, {
+      params: {
+        domain_prefix: 'hemaa',
+        client_id: client_id,
+        client_secret: client_secret,
+        username: req.body.email,
+        password: req.body.password,
+        grant_type: 'password'
+      }
+    })
+    .then(function(response) {
+      if (response.status === 200) {
+        console.log(response.status);
+        console.log(response.data);
+        res.status(200).json({success: true, accessToken: response.data.access_token});
+        return;
+      }
+    })
+    .catch(function(error) {
+      console.log("Failed login attempt");
+      res.status(400).json({success: false, message: error});
+      return;
+    });
+};
 
 module.exports = {
   loginAdmin

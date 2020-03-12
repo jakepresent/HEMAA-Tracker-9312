@@ -102,7 +102,7 @@ class HomePage extends React.Component {
   }
 
   autoLogin = loginFunction => async event => {
-    loginFunction("admin@hemaa.com", "letmein");
+    loginFunction("balkrishna.patel49@gatech.edu", "TeamJDB9312");
   }
 
   tidyLogin = async event => {
@@ -211,10 +211,6 @@ class HomePage extends React.Component {
                       >Bypass admin authentication</button>
                     </div>
                   )}
-                  <button
-                  onClick={this.tidyLogin}>
-                    TidyHQ Login
-                  </button>
               </div>
             )
         }
