@@ -16,16 +16,13 @@ loginAdmin = async (req, res) => {
     })
     .then(function (response) {
       if (response.status === 200) {
-        console.log(response.status);
-        console.log(response.data);
-        res.status(200).json({ success: true, accessToken: response.data.access_token });
-        return;
+        var token = "Bearer " + response.data.access_token;
+        return res.status(200).json({ success: true, accessToken: token });
       }
     })
     .catch(function (error) {
       console.log("Failed login attempt");
-      res.status(400).json({ success: false, message: error });
-      return;
+      return res.status(400).json({ success: false, message: error });
     });
 };
 

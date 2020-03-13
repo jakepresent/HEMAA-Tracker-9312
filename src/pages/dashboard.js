@@ -8,23 +8,20 @@ import Profile from "../components/Profile";
 import AdminActions from "./AdminActions";
 
 const DashboardPage = () => (
-  <div>
-    <AdminActions />
-  </div>
-  // <AuthConsumer>
-  //   {({ authenticated }) =>
-  //     !authenticated ? (
-  //       <Redirect to="/" />
-  //     ) : (
-  //         <div>
-  //           <h1>Admin Dashboard</h1>
-  //           <Logout />
-  //           <Profile />
-  //           <AdminActions />
-  //         </div>
-  //       )
-  //   }
-  // </AuthConsumer>
+  <AuthConsumer>
+    {({ authenticated }) =>
+      !authenticated ? (
+        <Redirect to="/" />
+      ) : (
+          <div>
+            <h1>Admin Dashboard</h1>
+            <Logout />
+            <Profile />
+            <AdminActions />
+          </div>
+        )
+    }
+  </AuthConsumer>
 
 );
 

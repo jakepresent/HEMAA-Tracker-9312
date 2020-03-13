@@ -105,20 +105,6 @@ class HomePage extends React.Component {
     loginFunction("balkrishna.patel49@gatech.edu", "TeamJDB9312");
   }
 
-
-  handleTidyHQLogin = redirectFunction => async event => {
-    event.preventDefault();
-    api.loginAdmin();
-    this.setState({ email_message: <Redirect to="http://localhost:3000/testpage" /> })
-  }
-
-  // tidyLogin = async event => {
-  //   var button = document.getElementById("tidyLogin");
-  //   api.loginAdmin();
-  //   this.setState()
-  //   // this.setState({ email_message: <Redirect to="https://accounts.tidyhq.com/oauth/authorize" /> })
-  // }
-
   render() {
     return (
       <AuthConsumer>
