@@ -220,14 +220,6 @@ class HomePage extends React.Component {
                       >Bypass admin authentication</button>
                     </div>
                   )}
-<<<<<<< HEAD
-                <button
-                  id="tidyLogin"
-                  onClick={this.handleTidyHQLogin}>
-                  TidyHQ Login
-                  </button>
-=======
->>>>>>> c44d3259f15a6e67d9bd6297800045a56925a689
               </div>
             )
         }
