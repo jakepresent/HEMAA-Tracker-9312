@@ -20,22 +20,25 @@ class Auth extends Component {
   state = {
     authenticated: false,
     user: {
-      role: "visitor"
+      role: "visitor",
+      email: ""
     },
     accessToken: "",
-    authenticating_message: ""
+    authenticating_message: "",
   };
 
   initiateLogin = (email, password) => {
     this.setState({authenticating_message: "Loading..."});
     var login_info = { email: email, password: password };
     api
-      .getAdminByEmailandPassword(login_info)
+      .loginAdmin(login_info)
       .then(response => {
         if (response.status === 200) {
-          console.log("Login successful");
+          var token = response.data.accessToken;
+          this.setState({accessToken: token});
           this.setState({ authenticated: true });
-          this.setState({authenticating_message: <Redirect to="/dashboard" />}); 
+          this.setState({authenticating_message: <Redirect to="/dashboard" />});
+          this.setState({user: {role: "admin", email: email}});
         }
       })
       .catch(error => {
@@ -73,7 +76,6 @@ class Auth extends Component {
 
   setSession(data) {
     const user = {
-      id: data.sub,
       email: data.email,
       role: data[AUTH_CONFIG.roleUrl]
     };

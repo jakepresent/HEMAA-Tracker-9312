@@ -102,7 +102,7 @@ class HomePage extends React.Component {
   }
 
   autoLogin = loginFunction => async event => {
-    loginFunction("admin@hemaa.com", "letmein");
+    loginFunction("balkrishna.patel49@gatech.edu", "TeamJDB9312");
   }
 
   render() {
