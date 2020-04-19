@@ -113,11 +113,7 @@ class HomePage extends React.Component {
             <Redirect to="/dashboard" />
           ) : (
               <div>
-                <h2>Welcome to the HEMAA Membership Checker!</h2>
-                <h5>
-                  Enter an email below to check if that member is registered
-              </h5>
-                <form onSubmit={this.handleSubmit} noValidate>
+                <form onSubmit={this.handleSubmit} noValidate display={{}}>
                   <div className="form-group">
                     <label>
                       <input
@@ -137,7 +133,7 @@ class HomePage extends React.Component {
                   <input
                     type="submit"
                     className="btn btn-primary"
-                    value="Submit"
+                    value="Verify Membership"
                   />
                 </form>
                 <div>
