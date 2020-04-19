@@ -16,7 +16,7 @@ loginAdmin = async (req, res) => {
     })
     .then(function(response) {
       if (response.status === 200) {
-        var token = "Bearer " + response.data.access_token;
+        var token = response.data.access_token;
         return res.status(200).json({success: true, accessToken: token});
       }
     })
