@@ -115,8 +115,9 @@ class HomePage extends React.Component {
               <div>
                 <form onSubmit={this.handleSubmit} noValidate display={{}}>
                   <div className="form-group">
-                    <label>
+                    <label className="col-auto" >
                       <input
+                        style={{width:"350px"}}
                         type="text"
                         name="email"
                         className="form-control"
@@ -131,6 +132,7 @@ class HomePage extends React.Component {
                     </label>
                   </div>
                   <input
+                    style={{width:"350px"}}
                     type="submit"
                     className="btn btn-primary"
                     value="Verify Membership"
@@ -142,6 +144,7 @@ class HomePage extends React.Component {
                   <br />
                 </div>
                 <button
+                  style={{width:"350px"}}
                   id="adminLogin"
                   className="btn btn-sm btn-primary"
                   onClick={this.clickAdminLogin(reset)}
@@ -162,10 +165,11 @@ class HomePage extends React.Component {
                         <div className="form-group">
                           <label>
                             <input
+                              style={{width:"350px"}}
                               type="text"
                               name="admin_email"
                               className="form-control"
-                              placeholder="Enter admin email"
+                              placeholder="Enter TidyHQ username"
                               onChange={this.updateText(reset)}
                               autoFocus
                             />
@@ -176,15 +180,17 @@ class HomePage extends React.Component {
                           <br />
                           <label>
                             <input
+                              style={{width:"350px"}}
                               type="password"
                               name="admin_password"
                               className="form-control"
-                              placeholder="Enter admin password"
+                              placeholder="Enter TidyHQ password"
                               onChange={this.updateText(reset)}
                             />
                           </label>
                         </div>
                         <input
+                          style={{width:"350px"}}
                           type="submit"
                           className="btn btn-primary"
                           value="Submit"
@@ -196,6 +202,7 @@ class HomePage extends React.Component {
                         <br />
                       </div>
                       <button
+                        style={{width:"350px"}}
                         id="adminLogin"
                         className="btn btn-sm btn-primary"
                         onClick={this.autoLogin(initiateLogin)}
