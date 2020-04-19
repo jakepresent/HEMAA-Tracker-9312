@@ -35,6 +35,7 @@ class Auth extends Component {
       .then(response => {
         if (response.status === 200) {
           var token = response.data.accessToken;
+          console.log("Access token: " + token)
           this.setState({accessToken: token});
           this.setState({ authenticated: true });
           this.setState({authenticating_message: <Redirect to="/dashboard" />});
@@ -91,7 +92,7 @@ class Auth extends Component {
       ...this.state,
       initiateLogin: this.initiateLogin,
       handleAuthentication: this.handleAuthentication,
-      accessToken: this.accessToken,
+      accessToken: this.state.accessToken,
       logout: this.logout,
       reset: this.reset,
       authenticating_message: this.state.authenticating_message

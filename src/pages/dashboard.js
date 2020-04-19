@@ -7,6 +7,7 @@ import Logout from "../components/Logout";
 import Profile from "../components/Profile";
 import AdminActions from "./AdminActions";
 
+
 const DashboardPage = () => (
   <AuthConsumer>
     {({ authenticated }) =>
@@ -14,8 +15,10 @@ const DashboardPage = () => (
         <Redirect to="/" />
       ) : (
           <div>
+            <div style={{position: "relative"}}>
+              <Logout />
+            </div>
             <h1>Admin Dashboard</h1>
-            <Logout />
             <Profile />
             <AdminActions />
           </div>
