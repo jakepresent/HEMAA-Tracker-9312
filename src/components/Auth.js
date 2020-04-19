@@ -91,6 +91,7 @@ class Auth extends Component {
       ...this.state,
       initiateLogin: this.initiateLogin,
       handleAuthentication: this.handleAuthentication,
+      accessToken: this.accessToken,
       logout: this.logout,
       reset: this.reset,
       authenticating_message: this.state.authenticating_message
