@@ -15,7 +15,9 @@ const DashboardPage = () => (
       ) : (
           <div>
             <h1>Admin Dashboard</h1>
-            <Logout />
+            <div>
+              <Logout />
+            </div>
             <Profile />
             <AdminActions />
           </div>
