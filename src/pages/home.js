@@ -101,10 +101,6 @@ class HomePage extends React.Component {
     }
   }
 
-  autoLogin = loginFunction => async event => {
-    loginFunction("balkrishna.patel49@gatech.edu", "TeamJDB9312");
-  }
-
   render() {
     return (
       <AuthConsumer>
@@ -201,12 +197,6 @@ class HomePage extends React.Component {
                         <h4>{authenticating_message}</h4>
                         <br />
                       </div>
-                      <button
-                        style={{width:"350px"}}
-                        id="adminLogin"
-                        className="btn btn-sm btn-primary"
-                        onClick={this.autoLogin(initiateLogin)}
-                      >Bypass admin authentication</button>
                     </div>
                   )}
               </div>
