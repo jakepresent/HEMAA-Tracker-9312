@@ -2,12 +2,8 @@ const axios = require("axios").default;
 const Member = require("../models/Member");
 const { check, validationResult } = require("express-validator");
 
-validate = (method) => {
-  switch (method) {
-    case "getMemberByEmail": {
-      return [check("email", "Invalid email").exists().trim().isEmail()];
-    }
-  }
+validateEmail = () => {
+  return [check("email", "Invalid email").exists().trim().isEmail()];
 };
 
 getMemberByEmail = async (req, res) => {
@@ -62,27 +58,32 @@ updateMembers = async (req, res) => {
         .then((memberships) => {
           memberships.data.forEach(function (membership) {
             if (membership.state == "activated") {
-              var id = membership.contact_id;
-              membersObj[id].active = true;
+              membership.adult_members.forEach(function (obj) {
+                membersObj[obj.contact_id].active = true;
+              });
             }
           });
 
           var membersArray = Object.values(membersObj);
-
+          // Sort the members so that inactive ones come first.
+          // This is because there are some duplicate accounts, 
+          // and the active one should get the final say when updating the database.
+          membersArray.sort(function(m1,m2){return m1.active-m2.active});
+          
           // Update the database of member statuses
           membersArray.forEach(function(member) {
             Member.findOneAndUpdate(
               { email: member.email },
               member,
               { upsert: true },
-              function(err, db_res) {
+              function(err) {
                 if (err) {
                   console.log(err);
                 }
               }
             );
           });
-          
+
           console.log("Successfully updated members");
 
           return res.status(200).json({ success: true, members: membersArray });
@@ -99,7 +100,7 @@ updateMembers = async (req, res) => {
 };
 
 module.exports = {
-  validate,
+  validateEmail,
   getMemberByEmail,
   updateMembers,
 };

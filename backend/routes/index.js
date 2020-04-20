@@ -3,7 +3,7 @@ const router = express.Router();
 const AdminController = require("../controllers/adminController");
 const MemberController = require("../controllers/memberController");
 
-router.get(`/member/find/:email`, MemberController.validate('getMemberByEmail'), MemberController.getMemberByEmail);
+router.get(`/member/find/:email`, MemberController.validateEmail(), MemberController.getMemberByEmail);
 router.post(`/member/update/`, MemberController.updateMembers);
 router.post(`/admin/login/`, AdminController.loginAdmin);
 
