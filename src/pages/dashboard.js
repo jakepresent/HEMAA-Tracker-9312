@@ -2,7 +2,6 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 
 import { AuthConsumer } from "../authContext";
-import Can from "../components/Can";
 import Logout from "../components/Logout";
 import Profile from "../components/Profile";
 import AdminActions from "./AdminActions";

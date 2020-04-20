@@ -1,7 +1,4 @@
 import React from "react";
-import adminInfo from "../adminInfo";
-import CsvUpload from "../components/CsvUpload";
-import AdminList from "../components/AdminList";
 import { AuthConsumer } from "../authContext";
 
 const api = require("../api");
@@ -22,12 +19,14 @@ class AdminActions extends React.Component {
       .then(response => {
         var message = "";
         if (response.status === 200) {
-          this.setState({buttonText: "Update Members"})
+          console.log(response);
+          this.setState({buttonText: "Update Members"});
           console.log("Member update successful");
           window.alert("Member list synced with TidyHQ successfully");
         }
       })
       .catch(function (error) {
+        this.setState({buttonText: "Update Members"})
         console.log(error);
         window.alert("Error occured syncing member list with TidyHQ: " + error);
       });
@@ -37,7 +36,7 @@ class AdminActions extends React.Component {
   render() {
     return (
       <AuthConsumer>
-        {({ accessToken }) =>
+        {({ accessToken }) => (
           <div>
             <h2>Admin Actions</h2>
 
@@ -45,7 +44,7 @@ class AdminActions extends React.Component {
               {this.state.buttonText}
             </button>
           </div>
-      }
+        )}
       </AuthConsumer>
     );
   }

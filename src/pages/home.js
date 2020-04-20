@@ -1,7 +1,6 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { AuthConsumer } from "../authContext";
-import Login from "../components/Login";
 
 const api = require("../api");
 
