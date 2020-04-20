@@ -28,7 +28,6 @@ class HomePage extends React.Component {
   }
 
   updateText = resetFunction => async event => {
-    console.log(event);
     const {
       target: { name, value }
     } = event;

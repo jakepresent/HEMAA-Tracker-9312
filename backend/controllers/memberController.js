@@ -38,7 +38,6 @@ getMemberByEmail = async (req, res) => {
 
 updateMembers = async (req, res) => {
   var token = req.headers.authorization;
-  console.log(JSON.stringify(token));
   // Get list of members from TidyHQ
   axios
     .get("https://api.tidyhq.com/v1/contacts", {

@@ -9,36 +9,29 @@ const api = require("../api");
 class AdminActions extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {buttonText: "Update Members"}
     this.updateMembers = this.updateMembers.bind(this);
   }
 
   updateMembers = token => async event => {
-    console.log(token);
+    
+    this.setState({buttonText: "Loading..."})
     
     api
       .updateMembers(token)
       .then(response => {
         var message = "";
-        console.log(response);
+        if (response.status === 200) {
+          this.setState({buttonText: "Update Members"})
+          console.log("Member update successful");
+          window.alert("Member list synced with TidyHQ successfully");
+        }
       })
-      //   if (response.status === 200) {
-      //     console.log("Login successful");
-      //     var active = response.data.data.active;
-      //     message =
-      //       email + " is an " + (active ? "active" : "inactive") + " member";
-      //   } else if (response.status === 204) {
-      //     console.log("Member not found");
-      //     message = email + " was not found";
-      //   } else {
-      //     console.log("Unknown status");
-      //     message = email + ": unknown status";
-      //   }
-      //   this.setState({ status_message: message });
-      // })
       .catch(function (error) {
         console.log(error);
-        window.alert("Error occured: " + error);
+        window.alert("Error occured syncing member list with TidyHQ: " + error);
       });
+      this.setState({buttonText: "Updating..."})
   }
 
   render() {
@@ -48,7 +41,9 @@ class AdminActions extends React.Component {
           <div>
             <h2>Admin Actions</h2>
 
-            <button id="csvButton" className="btn btn-sm btn-primary" onClick={this.updateMembers(accessToken)}>Update Members</button>
+            <button id="updateButton" className="btn btn-sm btn-primary" onClick={this.updateMembers(accessToken)}>
+              {this.state.buttonText}
+            </button>
           </div>
       }
       </AuthConsumer>
