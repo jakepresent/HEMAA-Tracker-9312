@@ -2,15 +2,10 @@ const axios = require("axios").default;
 const Member = require("../models/Member");
 const { check, validationResult } = require("express-validator");
 
-validate = method => {
+validate = (method) => {
   switch (method) {
     case "getMemberByEmail": {
-      return [
-        check("email", "Invalid email")
-          .exists()
-          .trim()
-          .isEmail()
-      ];
+      return [check("email", "Invalid email").exists().trim().isEmail()];
     }
   }
 };
@@ -33,56 +28,78 @@ getMemberByEmail = async (req, res) => {
         .json({ success: true, message: "Member not found" });
     }
     return res.status(200).json({ success: true, data: member });
-  }).catch(err => console.log(err));
+  }).catch((err) => console.log(err));
 };
 
 updateMembers = async (req, res) => {
   var token = req.headers.authorization;
-  console.log(JSON.stringify(token));
   // Get list of members from TidyHQ
   axios
     .get("https://api.tidyhq.com/v1/contacts", {
       headers: {
-        authorization: token
-      }
+        authorization: token,
+      },
     })
-    .then(response => {
-      // Filter out all fields except email and status
-      var membersArray = [];
-      response.data.forEach(function(member) {
-        membersArray.push({
-          email: member.email_address,
-          active: member.status == "active"
-        });
+    .then((response) => {
+      var membersObj = {};
+      // Loop through all members stored in TidyHQ
+      response.data.forEach(function (member) {
+        var id = member.id;
+        var email = member.email_address;
+        membersObj[id] = {
+          email: email,
+          active: false,
+        };
       });
 
-      // Create members if they do not exist, otherwise update
-      membersArray.forEach(function(data) {
-        Member.findOneAndUpdate(
-          { email: data.email },
-          data,
-          { upsert: true },
-          function(err, res) {
-            if (err) {
-              console.log(err);
+      // Get all memberships from TidyHQ
+      axios
+        .get("https://api.tidyhq.com/v1/memberships", {
+          headers: {
+            authorization: token,
+          },
+        })
+        .then((memberships) => {
+          memberships.data.forEach(function (membership) {
+            if (membership.state == "activated") {
+              var id = membership.contact_id;
+              membersObj[id].active = true;
             }
-          }
-        );
-      });
-      // Return response with array of member JSONs
-      return res.status(200).json({ success: true, members: membersArray });
+          });
+
+          var membersArray = Object.values(membersObj);
+
+          // Update the database of member statuses
+          membersArray.forEach(function(member) {
+            Member.findOneAndUpdate(
+              { email: member.email },
+              member,
+              { upsert: true },
+              function(err, db_res) {
+                if (err) {
+                  console.log(err);
+                }
+              }
+            );
+          });
+          
+          console.log("Successfully updated members");
+
+          return res.status(200).json({ success: true, members: membersArray });
+        })
+        .catch((err) => {
+          console.log("Unable to get memberships from TidyHQ");
+          console.log(err);
+        });
     })
-    .catch(error => {
-      return res.status(400).json({
-        success: false,
-        message: "Failed to get members",
-        error: error
-      });
+    .catch((err) => {
+      console.log("Unable to get members from TidyHQ");
+      console.log(err);
     });
 };
 
 module.exports = {
   validate,
   getMemberByEmail,
-  updateMembers
+  updateMembers,
 };
